@@ -1,0 +1,12 @@
+python-dotenv
+beautifulsoup4  # bs4 is imported
+requests  # Common dependency for web-based operations, assuming for WebBaseLoader
+IPython  # For display, Markdown, Latex functionalities
+glob  # Assuming you're using glob, but glob2 is an extended version compatible with more patterns
+pypdf2  # For PDF parsing
+chromadb  # Specific package, ensure correct name and version as needed
+# For langchain and its related packages, if they are not standard PyPI packages, you may need a direct link or specify them differently
+langchain
+langchainhub
+langchain_community
+langchain_openai
