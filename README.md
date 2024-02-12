@@ -9,8 +9,9 @@ While the current example uses OpenAI's API, the RAG can use local LLMs and addr
 ## Example Output
 
 ### Question
-explain ASOP No. 14  
-*Note: Asking this question to LLM often leads to hallucination as the LLMs often explain the ASOP as if it is not repealed.*
+User prompt: explain ASOP No. 14  
+- *Note: Asking this question to LLMs (such as ChatGPT 4) often leads to hallucination as they often explain the ASOP as if it is not repealed or refer to other ASOP documents.*
+- *Note: The RAG provides both the answer and context.*
 
 ### Answer
 ASOP No. 14 was reviewed as part of a project to look at all cash flow testing standards of practice, and relevant portions were incorporated into the revisions of ASOP No. 7 and ASOP No. 22. The ASB voted to adopt the revised ASOP No. 7 and ASOP No. 22 and to repeal ASOP No. 14 in September 2001. The effective date of ASOP No. 7 was deferred to July 15, 2002, while concerns were reviewed regarding its applicability to property/casualty practice.
@@ -24,7 +25,7 @@ virelated to cash flow testing. Finally, the ASB has adopted a new format for st
 - Source 2: ../data/ASOP/asop004_173.pdf, page 31:  
 are found in the current version of ASOP No. 4. The reviewers believe the reference to Precept 8 remains appropriate. The reviewers do not believe that the proposed change significantly improves the language included in the current version of ASOP No. 4, and made no change.  
 
-- Source 3: ...
+- Source 3: ... *(all the context not shown in this illustration)*
 
 ## Author
 Dan Kim 
