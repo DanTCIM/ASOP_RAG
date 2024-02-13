@@ -29,6 +29,23 @@ are found in the current version of ASOP No. 4. The reviewers believe the refere
 
 - Source 3: ... *(all the context not shown in this illustration)*
 
+## Conceptual Flow
+RAG combines search and LLM generations.  
+
+LLM completions are the results of model inference based on locked-in parameters. That said, any knowledge or information from LLM can be outdated unless augmented by external sources. RAG connects external documents, searches the document, and provides the relevant context to LLM. For an effective search, the external documents are transformed into a vector database during the initial setup stage.  
+
+For applications in practice, one should note that RAG is not perfect and can still lead to errors in searching or generating responses that are irrelevant or incorrect. As such, verifiability in RAG becomes crucial for actuarial use cases.
+
+![RAG concept](./images/RAG_concept.png)
+
+## RAG Steps Used in the Project
+1. Decide whether to use OpenAI or local open-source models
+2. Select PDF documents (e.g., ASOP) to perform RAG
+3. Transform PDF into texts and divide them into chunks
+4. Convert the chunks into a vector database (Chroma DB) using embedding models (OpenAI, GPT4All)
+5. Retrieve and use LLM (GPT 3.5 Instruct, Solar 10.7B) to generate
+6. Output responses and context for a user to verify
+
 ## Author
 Dan Kim 
 
