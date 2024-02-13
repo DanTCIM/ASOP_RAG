@@ -6,6 +6,8 @@ However, RAG is not without challenges, i.e., hallucination and inaccuracy. This
 
 The current example uses either OpenAI's GPT 3.5 turbo or a local LLM. Using a local LLM can address potential data privacy or security concerns.
 
+Please see a [Jupyter notebook](./notebook/ASOP Q&A machine.ipynb) for details of the code in the `notebook' folder.
+
 ## Example Output
 
 ### Question
