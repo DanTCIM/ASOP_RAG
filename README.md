@@ -4,7 +4,7 @@ This project aims to create a Retrieval-Augmented Generation (RAG) process for a
 
 However, RAG is not without challenges, i.e., hallucination and inaccuracy. This code allows verifiability by providing the context it used to arrive at those answers. This process enables actuaries to validate the information provided by the LLM, empowering them to make informed decisions. By combining the capabilities of LLM with verifiability, this code offers actuaries a robust tool to leverage LLM technology effectively and extract maximum value.
 
-While the current example uses OpenAI's API, the RAG can use local LLMs and address potential data privacy or security concerns.
+The current example uses either OpenAI's GPT 3.5 turbo or a local LLM. Using a local LLM can address potential data privacy or security concerns.
 
 ## Example Output
 
