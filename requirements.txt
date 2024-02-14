@@ -10,3 +10,4 @@ langchain
 langchainhub
 langchain_community
 langchain_openai
+gpt4all # for embedding
