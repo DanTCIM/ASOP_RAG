@@ -4,18 +4,18 @@ This project aims to create a Retrieval-Augmented Generation (RAG) process for a
 
 However, RAG is not without challenges, i.e., hallucination and inaccuracy. The project example allows verifiability by providing the context an LLM used to arrive at those answers. This process enables actuaries to validate the LLM's answers, empowering them to make informed decisions. By combining the capabilities of LLM with verifiability, this RAG process offers actuaries a robust tool to leverage LLM technology effectively and extract maximum value.
 
-The current example uses OpenAI's GPT 3.5 turbo and local LLMs (e.g., Mistral 7B Instruct, SOLAR 10.7B Instruct). A local LLM can address potential data privacy or security concerns.
+The current example uses OpenAI's GPT 3.5 turbo and open-source LLMs (e.g., Mistral 7B Instruct, SOLAR 10.7B Instruct). The open-source models can be used locally and can address potential data privacy or security concerns.
 
 Please see a [Jupyter notebook (ASOP_RAG.ipynb))](./notebook/ASOP_RAG.ipynb) for details of the Python codes in the `notebook` folder. You can choose either Open AI or Local LLM to use the RAG.  
 An alternative [notebook (ASOP_RAG_compare.ipynb)](./notebook/ASOP_RAG_compare.ipynb) outputs the responses from both Open AI and a local LLM for comparison purposes.
 
-Here are the local models used:
+Here are the open-source models used:
 - Mistral 7B Instruct: [Apache License 2.0](https://ollama.com/library/mistral/blobs/sha256:43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1)
 - SOLAR 10.7B Instruct: [cc-by-nc-4.0](https://huggingface.co/upstage/SOLAR-10.7B-Instruct-v1.0) (non-commercial use)
 - [GPT4All embedding model](https://python.langchain.com/docs/integrations/text_embedding/gpt4all)
 - [Chroma DB](https://www.trychroma.com/) for vector database
 
-The RAG process used LangChain, Ollama, and chroma DB frameworks. See below for acknowledgments and references.
+The RAG process used LangChain and Ollama frameworks. See below for acknowledgments and references.
 
 ## 2. Example Output
 
