@@ -6,7 +6,7 @@ However, RAG is not without challenges, i.e., hallucination and inaccuracy. The 
 
 The current example uses OpenAI's GPT 3.5 turbo and open-source LLMs (e.g., Mistral 7B Instruct, SOLAR 10.7B Instruct). The open-source models can be used locally and can address potential data privacy or security concerns.
 
-Please see a [Jupyter notebook (ASOP_RAG.ipynb))](./notebook/ASOP_RAG.ipynb) for details of the Python codes in the `notebook` folder. You can choose either Open AI or open-source LLM to use the RAG.  
+Please see a [Jupyter notebook (ASOP_RAG.ipynb)](./notebook/ASOP_RAG.ipynb) for details of the Python codes in the `notebook` folder. You can choose either Open AI or open-source LLM to use the RAG.  
 An alternative [notebook (ASOP_RAG_compare.ipynb)](./notebook/ASOP_RAG_compare.ipynb) outputs the responses from both Open AI and an open-source LLM for comparison purposes.
 
 Here are the open-source models used:
