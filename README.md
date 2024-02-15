@@ -15,7 +15,11 @@ Here are the open-source models used:
 - [GPT4All embedding model](https://python.langchain.com/docs/integrations/text_embedding/gpt4all)
 - [Chroma DB](https://www.trychroma.com/) for vector database
 
-The RAG process used LangChain and Ollama frameworks. See below for acknowledgments and references.
+The RAG process used LangChain and Ollama frameworks.  
+- LangChain is a framework for developing applications powered by LLMs.
+- Ollama is an effective way to get up and running with LLMs locally. 
+
+See below for acknowledgments and references.
 
 ## 2. Example Output
 
