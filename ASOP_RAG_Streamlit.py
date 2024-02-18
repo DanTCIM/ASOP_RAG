@@ -34,9 +34,11 @@ llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125",
 
 
 # # Get a Chroma vector database with specified parameters
-vectorstore = Chroma(embedding_function=embeddings_model, 
-                     persist_directory=db_directory)
-
+#@st.cache_data
+#def create_vectorstore(_embeddings_model, _db_directory):
+#    # Get a Chroma vector database with specified parameters
+#    return Chroma(embedding_function=_embeddings_model, persist_directory=_db_directory)
+vectorstore = Chroma(embedding_function=embeddings_model, persist_directory=db_directory)
 
 # # Retrieve and RAG chain
 # Create a retriever using the vector database as the search source
