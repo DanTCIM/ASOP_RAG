@@ -4,6 +4,13 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
+# sqlite3
+import pysqlite3
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+import streamlit as st
+import sqlite3
+
 # Import the necessary modules
 from langchain import hub
 from langchain_community.vectorstores import Chroma
