@@ -1,8 +1,11 @@
-# For langchain and its related packages, if they are not standard PyPI packages, you may need a direct link or specify them differently
+### For langchain and its related packages, if they are not standard PyPI packages, you may need a direct link or specify them differently
 langchain
 langchainhub
 langchain_community
 langchain_openai
+
+### For streamlit app run
+pysqlite3-binary
 
 ### The following requirements for local run
 #python-dotenv
