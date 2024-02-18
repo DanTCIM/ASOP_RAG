@@ -87,7 +87,7 @@ def generate_output():
     output = rag_chain_with_source.invoke(usr_input)
 
     # Generate the Markdown output with the question, answer, and context
-    markdown_output = "### Question\n{}\n\n### Answer\n{}\n\n### Context\n".format(output['question'], output['answer'])
+    markdown_output = "### Question\n{}\n\n### Answered by GPT 3.5-turbo\n{}\n\n### Context\n".format(output['question'], output['answer'])
 
     last_page_content = None  # Variable to store the last page content
     i = 1 # Source indicator
