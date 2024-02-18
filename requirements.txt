@@ -5,6 +5,7 @@ langchain_community
 langchain_openai
 
 ### For streamlit app run
+streamlit
 pysqlite3-binary
 
 ### The following requirements for local run
