@@ -4,10 +4,10 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
-# sqlite3
-import pysqlite3
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# sqlite3 related
+#import pysqlite3
+#import sys
+#sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import streamlit as st
 import sqlite3
 
