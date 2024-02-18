@@ -18,7 +18,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.runnables import RunnableParallel # for RAG with source
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-import chromadb
+#import chromadb
 
 # # Set up the title and input
 st.title("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)")
