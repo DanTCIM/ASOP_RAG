@@ -15,7 +15,8 @@ ipython  # For display, Markdown, Latex functionalities
 gpt4all # for embedding
 # glob  # Assuming you're using glob, but glob2 is an extended version compatible with more patterns
 PyPDF2  # For PDF parsing
-chromadb  # Specific package, ensure correct name and version as needed
+#chromadb  # Specific package, ensure correct name and version as needed
+chromadb==0.3.29
 
 ### The following requirements for web search
 #beautifulsoup4  # bs4 is imported
