@@ -22,6 +22,7 @@ The RAG process used LangChain and Ollama frameworks.
 See below for acknowledgments and references.
 
 ## 2. Example Output
+Explore the potentials of RAG by visiting the Streamlit web app [https://asop-search.streamlit.app/](https://asop-search.streamlit.app/) powered by GPT 3.5 turbo.
 
 #### Question
 User prompt: explain ASOP No. 14  
