@@ -21,11 +21,12 @@ The RAG process used LangChain and Ollama frameworks.
 
 See below for acknowledgments and references.
 
-## 2. Demo App
+## 2. Output
+### 2.1 Demo App
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://asop-search.streamlit.app/)  
 Explore the potentials of RAG by visiting the Streamlit web app (https://asop-search.streamlit.app/) powered by GPT 3.5 turbo.
 
-## 3. Example Output
+### 2.2 Example Output
 
 #### Question
 User prompt: explain ASOP No. 14  
@@ -46,7 +47,8 @@ are found in the current version of ASOP No. 4. The reviewers believe the refere
 
 - Source 3: ... *(all the context not shown in this illustration)*
 
-## 4. Conceptual Flow
+## 3. Model
+### 3.1 Conceptual Flow
 RAG combines search and LLM generations.  
 
 LLM completions are the results of model inference based on locked-in parameters. Any knowledge or information from LLM can be outdated unless augmented by external sources. RAG connects external documents, searches the document, and provides the relevant context to LLM. The external documents are transformed into a vector database during the initial setup stage for an effective search.  
@@ -55,7 +57,7 @@ For applications in practice, one should note that RAG is not perfect and can st
 
 ![RAG concept](./images/RAG_concept.png)
 
-## 5. RAG Steps Used in the Project
+### 3.2 RAG Implementation Steps
     1. Decide whether to use OpenAI or local open-source models
     2. Select PDF documents (e.g., ASOP) to perform RAG
     3. Transform PDF into texts and divide them into chunks
@@ -63,20 +65,20 @@ For applications in practice, one should note that RAG is not perfect and can st
     5. Retrieve and use LLM (GPT 3.5 Instruct, Solar 10.7B) to generate
     6. Output responses and context for a user to verify
 
-## 6. Author
+## 4. Author
 Dan Kim 
 
 - [@LinkedIn](https://www.linkedin.com/in/dan-kim-4aaa4b36/)
 - dan.kim.actuary@gmail.com (feel free to reach out with questions or comments)
 
-## 7. Date
+## 5. Date
 - Initially published on 2/12/2024
 - The contents may be updated from time to time
   
-## 8. License
+## 6. License
 This project is licensed under the Apache License 2.0- see the LICENSE.md file for details.
 
-## 9. Acknowledgments and References
+## 7. Acknowledgments and References
 - https://www.actuarialstandardsboard.org/standards-of-practice/ (downloaded as of December 2023)
 - https://python.langchain.com/docs/use_cases/question_answering/quickstart
 - https://python.langchain.com/docs/use_cases/question_answering/sources
