@@ -26,9 +26,10 @@ st.title("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Aug
 st.header("Powered by OpenAI's GPT 3.5-Turbo: Harness the capabilities of LLM to search for and retrieve information on Actuarial Standards of Practice")
 
 link1 = "https://github.com/DanTCIM/ASOP_RAG"
-st.write(f"This tool is designed to assist users by providing quick access to relevant ASOP information. The Python codes and documentations of the project are in [GitHub]({link1}).")
-link2 = "https://www.actuarialstandardsboard.org/standards-of-practice/"
-st.write(f"Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. Please visit [Actuarial Standard Board's ASOP site]({link2}) to see the source of the contexts.")
+link2 = "http://www.actuarialstandardsboard.org/wp-content/uploads/2023/12/ASOPs-as-of-Decemeber-2023.zip"
+st.write(f"This tool is designed to assist users by retrieving information from documents downloaded from Actuarial Standards Board's [Actuarial Standards of Practice]({link2}) as of December 2023. The Python codes and documentation of the project are in [GitHub]({link1}).")
+link3 = "https://www.actuarialstandardsboard.org/standards-of-practice/"
+st.write(f"Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. Please visit [Actuarial Standard Board's ASOP site]({link3}) to see the latest sources.")
 
 #st.write("What is your question on ASOP?:")
 # Prompt the user for a question on ASOP
