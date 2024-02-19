@@ -23,7 +23,7 @@ import chromadb
 
 # # Set up the title and input
 st.title("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)")
-st.header("Harness the capabilities of LLM 🧠 to search for and retrieve information on Actuarial Standards of Practice")
+st.header("Harness the capabilities of LLM 🧠 to search for and retrieve information on Actuarial Standards of Practice: Powered by OpenAI's GPT 3.5-Turbo")
 
 link1 = "https://github.com/DanTCIM/ASOP_RAG"
 st.write(f"This tool is designed to assist users by providing quick access to relevant ASOP information. The Python code and the documentation of the project are in [GitHub]({link1}).")
@@ -51,7 +51,7 @@ vectorstore = Chroma(embedding_function=embeddings_model, persist_directory=db_d
 # # Retrieve and RAG chain
 # Create a retriever using the vector database as the search source
 retriever = vectorstore.as_retriever(search_type="mmr", 
-                                     search_kwargs={'k': 6, 'lambda_mult': 0.35}) 
+                                     search_kwargs={'k': 5, 'lambda_mult': 0.5}) 
 # Use MMR (Maximum Marginal Relevance) to find a set of documents that are both similar to the input query and diverse among themselves
 # Increase the number of documents to get, and increase diversity (lambda mult 0.5 being default, 0 being the most diverse, 1 being the least)
 
