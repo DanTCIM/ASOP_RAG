@@ -91,7 +91,7 @@ rag_chain_with_source = RunnableParallel(
 
 # # Generate output
 def generate_output():
-    with st.spinner('RAG in process ...'):
+    with st.spinner('Retrieving info and generating response...'):
         # Invoke the RAG chain with the user input as the question
         output = rag_chain_with_source.invoke(usr_input)
     
