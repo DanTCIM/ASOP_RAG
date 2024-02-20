@@ -1,18 +1,14 @@
 # # Initial set up
+# Import the necessary modules
 import streamlit as st
 import os
 
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-
-# sqlite3 related
+# sqlite3 related (for Streamlit)
 import pysqlite3
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-#import sqlite3 ## commented out instead of the three lines above
 
-import streamlit as st
-
-# Import the necessary modules
+# Langchain and Vector DB
 from langchain import hub
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
@@ -21,17 +17,34 @@ from langchain_core.runnables import RunnableParallel # for RAG with source
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import chromadb
 
+## API key setup 
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
+## Sidebar
+with st.sidebar:
+    st.title("ASOP Q&A Machine")
+    st.write("Powered by OpenAI's GPT 3.5-Turbo: Harness the capabilities of LLM to search for and retrieve information on ASOP.")
+    
+    link1 = "http://www.actuarialstandardsboard.org/wp-content/uploads/2023/12/ASOPs-as-of-Decemeber-2023.zip"
+    st.write(f"ASOP documents are downloaded from Actuarial Standards Board's [link]({link1}) as of December 2023.")
+    
+    st.subheader('⚙️ RAG Parameters')
+    num_source = st.sidebar.slider('No. of sources to return', min_value=4, max_value=20, value=5, step=1)
+    _lambda_mult = st.sidebar.slider('Source precision', min_value=0.0, max_value=1.0, value=0.5, step=0.25)
+    st.write("The search algorithm fetches 20 sources regardless of the number of sources to return.")
+    st.write("Source precision controls how fetched sources are diverse. 0 being the most diverse, 1 being the least diverse. The diversity helps LLM generate a response considering multiple aspects.")
+
+    st.subheader('📖 Further Notes')
+    st.write("Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. The sources may appear less relevant to the question due to the diversity of the search.")
+    link2 = "https://www.actuarialstandardsboard.org/standards-of-practice/"
+    st.write(f"Please visit [Actuarial Standard Board's ASOP site]({link2}) to get the latest ASOP.")
+    
+    link3 = "https://github.com/DanTCIM/ASOP_RAG"
+    st.write(f"The Python codes and documentation of the project are in [GitHub]({link3}).")
+
 # # Set up the title and input
-st.title("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)")
-st.header("Powered by OpenAI's GPT 3.5-Turbo: Harness the capabilities of LLM to search for and retrieve information on Actuarial Standards of Practice")
-
-link1 = "https://github.com/DanTCIM/ASOP_RAG"
-link2 = "http://www.actuarialstandardsboard.org/wp-content/uploads/2023/12/ASOPs-as-of-Decemeber-2023.zip"
-st.write(f"This tool is designed to assist users by retrieving information from documents downloaded from Actuarial Standards Board's [Actuarial Standards of Practice]({link2}) as of December 2023. The Python codes and documentation of the project are in [GitHub]({link1}).")
-link3 = "https://www.actuarialstandardsboard.org/standards-of-practice/"
-st.write(f"Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. Please visit [Actuarial Standard Board's ASOP site]({link3}) to see the latest sources.")
-
-#st.write("What is your question on ASOP?:")
+st.header("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)")
+st.write("Please see sidebar for further information.")
 # Prompt the user for a question on ASOP
 usr_input = st.text_input("What is your question on ASOP?: ")
 
@@ -41,18 +54,13 @@ db_directory = "./data/chroma_db1"
 llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125", 
                  temperature=0) # context window size 16k for GPT 3.5 Turbo
 
-
 # # Get a Chroma vector database with specified parameters
-#@st.cache_data
-#def create_vectorstore(_embeddings_model, _db_directory):
-#    # Get a Chroma vector database with specified parameters
-#    return Chroma(embedding_function=_embeddings_model, persist_directory=_db_directory)
 vectorstore = Chroma(embedding_function=embeddings_model, persist_directory=db_directory)
 
 # # Retrieve and RAG chain
 # Create a retriever using the vector database as the search source
 retriever = vectorstore.as_retriever(search_type="mmr", 
-                                     search_kwargs={'k': 5, 'lambda_mult': 0.5}) 
+                                     search_kwargs={'k': num_source, 'lambda_mult': _lambda_mult}) 
 # Use MMR (Maximum Marginal Relevance) to find a set of documents that are both similar to the input query and diverse among themselves
 # Increase the number of documents to get, and increase diversity (lambda mult 0.5 being default, 0 being the most diverse, 1 being the least)
 
