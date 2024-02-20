@@ -91,30 +91,29 @@ rag_chain_with_source = RunnableParallel(
 
 # # Generate output
 def generate_output():
+    with st.spinner('RAG in process ...'):
+        # Invoke the RAG chain with the user input as the question
+        output = rag_chain_with_source.invoke(usr_input)
     
-    # Invoke the RAG chain with the user input as the question
-    output = rag_chain_with_source.invoke(usr_input)
-
-    # Generate the Markdown output with the question, answer, and context
-    markdown_output = "### Question\n{}\n\n### Search summarized by GPT 3.5-turbo\n{}\n\n### Sources\n".format(output['question'], output['answer'])
-
-    last_page_content = None  # Variable to store the last page content
-    i = 1 # Source indicator
-
-    # Iterate over the context documents to format and include them in the output
-    for doc in output['context']:
-        current_page_content = doc.page_content.replace('\n', '  \n')  # Get the current page content
+        # Generate the Markdown output with the question, answer, and context
+        markdown_output = "### Question\n{}\n\n### Search summarized by GPT 3.5-turbo\n{}\n\n### Sources\n".format(output['question'], output['answer'])
+    
+        last_page_content = None  # Variable to store the last page content
+        i = 1 # Source indicator
+    
+        # Iterate over the context documents to format and include them in the output
+        for doc in output['context']:
+            current_page_content = doc.page_content.replace('\n', '  \n')  # Get the current page content
+            
+            # Check if the current content is different from the last one
+            if current_page_content != last_page_content:
+                markdown_output += "- **Source {}**: {}, page {}:\n\n{}\n".format(i, doc.metadata['source'], doc.metadata['page'], current_page_content)
+                i = i + 1
+            last_page_content = current_page_content  # Update the last page content
         
-        # Check if the current content is different from the last one
-        if current_page_content != last_page_content:
-            markdown_output += "- **Source {}**: {}, page {}:\n\n{}\n".format(i, doc.metadata['source'], doc.metadata['page'], current_page_content)
-            i = i + 1
-        last_page_content = current_page_content  # Update the last page content
-    
-    # Display the Markdown output
-    st.markdown(markdown_output)
+        # Display the Markdown output
+        st.markdown(markdown_output)
 
 # Let's search ASOP!
 if st.button('Search ASOP'):
-    st.write("Thank you for being patient! I am running ...")
     generate_output()
