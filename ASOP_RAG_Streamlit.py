@@ -16,6 +16,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.runnables import RunnableParallel # for RAG with source
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import chromadb
+from langchain_core.prompts import ChatPromptTemplate
 
 ## API key setup 
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
@@ -68,7 +69,21 @@ retriever = vectorstore.as_retriever(search_type="mmr",
 # Increase the number of documents to get, and increase diversity (lambda mult 0.5 being default, 0 being the most diverse, 1 being the least)
 
 # Load the RAG (Retrieval-Augmented Generation) prompt
-prompt = hub.pull("rlm/rag-prompt")
+#prompt_concise = hub.pull("rlm/rag-prompt")
+
+qa_system_prompt = """You are a helpful assistant to help actuaries with question-answering tasks. \
+Use the following pieces of retrieved context to answer the question. \
+All the contexts are from Actuarial Standards of Practice (also called ASOP or asop). \
+A user can ask related to a specific source (e.g., ASOP No. 14 means sources such as asop014_***.pdf). If so, use the specific source to answer.\
+If you don't know the answer, just say that you don't know. \
+
+{context}"""
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", qa_system_prompt),
+        ("human", "{question}"),
+    ]
+)
 
 # Define a function to format the documents with their sources and pages
 def format_docs_with_sources(docs):
@@ -110,7 +125,7 @@ def generate_output(prompt_input):
         
         # Check if the current content is different from the last one
         if current_page_content != last_page_content:
-            markdown_source_output += "#### Source {}: {}, page {}\n\n{}\n".format(i, doc.metadata['source'], doc.metadata['page'], current_page_content)
+            markdown_source_output += "#### Source {}: {}, page {}\n\n{}\n".format(i, doc.metadata['source'].split("/data/ASOP/")[-1], doc.metadata['page'], current_page_content)
             i = i + 1
         last_page_content = current_page_content  # Update the last page content
     
@@ -124,7 +139,7 @@ if "messages" not in st.session_state.keys():
 # Display or clear chat messages
 for message in st.session_state.messages:
     if message['type'] == 'source':
-        with st.expander("See sources"):
+        with st.expander("See the top N sources (some may appear less relevant due to the diversity of the search)"):
             st.write(message["content"])    
     else:
         with st.chat_message(message["role"]):
@@ -143,7 +158,7 @@ if st.session_state.messages[-1]["role"] != "ai":
         with st.spinner("Retrieving info and generating response..."):
             response, sources = generate_output(user_prompt)
             st.write(response)
-    with st.expander("See sources", expanded=True):
+    with st.expander("See the top N sources (some may appear less relevant due to the diversity of the search)", expanded=False):
         st.write(sources)
     message = {"role": "ai", "content": response, "type": "text"}
     source_expand = {"role": "ai", "content": sources, "type": "source"}
