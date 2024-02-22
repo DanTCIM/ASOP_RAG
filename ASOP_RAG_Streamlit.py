@@ -75,6 +75,7 @@ qa_system_prompt = """You are a helpful assistant to help actuaries with questio
 Use the following pieces of retrieved context to answer the question. \
 All the contexts are from Actuarial Standards of Practice (also called ASOP or asop). \
 A user can ask related to a specific source (e.g., ASOP No. 14 means sources such as asop014_***.pdf). If so, use the specific source to answer.\
+After you answer, provide the sources you used to answer the question. \
 If you don't know the answer, just say that you don't know. \
 
 {context}"""
