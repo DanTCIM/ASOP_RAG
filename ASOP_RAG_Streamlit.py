@@ -17,9 +17,18 @@ from langchain_core.runnables import RunnableParallel # for RAG with source
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import chromadb
 from langchain_core.prompts import ChatPromptTemplate
+import pandas as pd
 
 ## API key setup 
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
+# # Set up the title and input
+st.header("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)")
+st.write("Please see sidebar for further information.")
+
+# Store LLM generated responses
+if "messages" not in st.session_state.keys():
+    st.session_state.messages = [{"role": "ai", "content": "What is your question on ASOP?", "type": "text"}]
 
 ## Sidebar
 with st.sidebar:
@@ -28,11 +37,30 @@ with st.sidebar:
     
     link1 = "http://www.actuarialstandardsboard.org/wp-content/uploads/2023/12/ASOPs-as-of-Decemeber-2023.zip"
     st.caption(f"ASOP documents are downloaded from Actuarial Standards Board's [link]({link1}) as of December 2023.")
-    
-    def clear_chat_history():
-        st.session_state.messages = [{"role": "ai", "content": "What is your question on ASOP?", "type": "text"}]
-    st.button('Clear Chat History', on_click=clear_chat_history)
-   
+
+    col1, col2 = st.columns(2)
+    with col1:
+        def convert_df():
+            df = pd.DataFrame(st.session_state.messages)        
+            return df.to_csv().encode('utf-8')
+        st.download_button(
+            label="Download Chat",
+            help="Download chat history in CSV",
+            data=convert_df(),
+            file_name='chat_history.csv',
+            mime='text/csv',
+            use_container_width=True,
+        )
+    with col2:
+        def clear_chat_history():
+            st.session_state.messages = [{"role": "ai", "content": "What is your question on ASOP?", "type": "text"}]
+        st.button(
+            'Clear Chat',
+            help="Clear chat history",
+            on_click=clear_chat_history,
+            use_container_width=True,
+        )
+
     with st.container(border=True):
         st.subheader('⚙️ RAG Parameters')
         num_source = st.slider('Top N sources to view:', min_value=4, max_value=20, value=5, step=1)
@@ -47,10 +75,6 @@ with st.sidebar:
     
     link3 = "https://github.com/DanTCIM/ASOP_RAG"
     st.write(f"The Python codes and documentation of the project are in [GitHub]({link3}).")
-
-# # Set up the title and input
-st.header("Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)")
-st.write("Please see sidebar for further information.")
 
 # # Model and directory setup
 embeddings_model = OpenAIEmbeddings()
