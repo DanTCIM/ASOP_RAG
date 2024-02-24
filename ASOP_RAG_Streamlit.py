@@ -64,9 +64,12 @@ with st.sidebar:
     with st.container(border=True):
         st.subheader('⚙️ RAG Parameters')
         num_source = st.slider('Top N sources to view:', min_value=4, max_value=20, value=5, step=1)
-        _lambda_mult = st.slider('Source diversity (lambda):', min_value=0.0, max_value=1.0, value=0.5, step=0.25)
-        with st.expander("What is diversity?"):
-            st.caption("Maximal Marginal Relevance (MMR) tries to reduce redundancy of fetched documents and increase diversity. 0 being the most diverse, 1 being the least diverse. 0.5 is a balanced state.")
+        flag_mmr = st.toggle('Diversity search',
+                            help="Diversity search, i.e., Maximal Marginal Relevance (MMR) tries to reduce redundancy of fetched documents and increase diversity. 0 being the most diverse, 1 being the least diverse. 0.5 is a balanced state.")
+        _lambda_mult = st.slider('Diversity parameter (lambda):', min_value=0.0, max_value=1.0, value=0.5, step=0.25)
+        
+        #with st.expander("What is diversity?"):
+        #    st.caption("Maximal Marginal Relevance (MMR) tries to reduce redundancy of fetched documents and increase diversity. 0 being the most diverse, 1 being the least diverse. 0.5 is a balanced state.")
 
     st.subheader('📖 Further Notes')
     st.write("Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. The sources may appear less relevant to the question due to the diversity of the search.")
@@ -87,10 +90,15 @@ vectorstore = Chroma(embedding_function=embeddings_model, persist_directory=db_d
 
 # # Retrieve and RAG chain
 # Create a retriever using the vector database as the search source
-retriever = vectorstore.as_retriever(search_type="mmr", 
-                                     search_kwargs={'k': num_source, 'lambda_mult': _lambda_mult}) 
-# Use MMR (Maximum Marginal Relevance) to find a set of documents that are both similar to the input query and diverse among themselves
-# Increase the number of documents to get, and increase diversity (lambda mult 0.5 being default, 0 being the most diverse, 1 being the least)
+if flag_mmr:
+    retriever = vectorstore.as_retriever(search_type="mmr", 
+                                         search_kwargs={'k': num_source, 'lambda_mult': _lambda_mult}) 
+    # Use MMR (Maximum Marginal Relevance) to find a set of documents 
+    # that are both similar to the input query and diverse among themselves
+    # Increase the number of documents to get, and increase diversity 
+    # (lambda mult 0.5 being default, 0 being the most diverse, 1 being the least)
+else:
+    retriever = vectorstore.as_retriever(search_kwargs={'k': num_source}) # use similarity
 
 # Load the RAG (Retrieval-Augmented Generation) prompt
 #prompt_concise = hub.pull("rlm/rag-prompt")
@@ -164,7 +172,7 @@ if "messages" not in st.session_state.keys():
 # Display or clear chat messages
 for message in st.session_state.messages:
     if message['type'] == 'source':
-        with st.expander("See the top N sources (some may appear less relevant due to the diversity of the search)"):
+        with st.expander("Review the top N sources"):
             st.write(message["content"])    
     else:
         with st.chat_message(message["role"]):
@@ -183,7 +191,7 @@ if st.session_state.messages[-1]["role"] != "ai":
         with st.spinner("Retrieving info and generating response..."):
             response, sources = generate_output(user_prompt)
             st.write(response)
-    with st.expander("See the top N sources (some may appear less relevant due to the diversity of the search)", expanded=False):
+    with st.expander("Review the top N sources", expanded=False):
         st.write(sources)
     message = {"role": "ai", "content": response, "type": "text"}
     source_expand = {"role": "ai", "content": sources, "type": "source"}
