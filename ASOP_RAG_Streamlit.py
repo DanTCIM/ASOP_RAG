@@ -3,7 +3,7 @@
 import streamlit as st
 import os
 
-sqlite3 related (for Streamlit)
+# sqlite3 related (for Streamlit)
 import pysqlite3
 import sys
 
