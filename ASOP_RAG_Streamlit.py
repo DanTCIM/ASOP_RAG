@@ -3,7 +3,7 @@
 import streamlit as st
 import os
 
-# sqlite3 related (for Streamlit)
+sqlite3 related (for Streamlit)
 import pysqlite3
 import sys
 
@@ -75,54 +75,6 @@ with st.sidebar:
         document_list,
     )
 
-    if document_name != "All":
-        pdf_file_path = base_path + "/" + document_name
-        # Open the file in binary mode
-        with open(pdf_file_path, "rb") as pdf_file:
-            # Read the PDF file's binary data
-            pdf_bytes = pdf_file.read()
-
-            # Create the download button
-            st.download_button(
-                label="Download selected document",
-                data=pdf_bytes,
-                file_name=pdf_file_path,
-                mime="application/octet-stream",
-            )
-
-    col1, col2 = st.columns(2)
-    with col1:
-
-        def convert_df():
-            df = pd.DataFrame(st.session_state.messages)
-            return df.to_csv().encode("utf-8")
-
-        st.download_button(
-            label="Download Chat",
-            help="Download chat history in CSV",
-            data=convert_df(),
-            file_name="chat_history.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-    with col2:
-
-        def clear_chat_history():
-            st.session_state.messages = [
-                {
-                    "role": "ai",
-                    "content": "What is your question on ASOP?",
-                    "type": "text",
-                }
-            ]
-
-        st.button(
-            "Clear Chat",
-            help="Clear chat history",
-            on_click=clear_chat_history,
-            use_container_width=True,
-        )
-
     with st.container(border=True):
         st.subheader("⚙️ RAG Parameters")
         num_source = st.slider(
@@ -143,19 +95,6 @@ with st.sidebar:
         # with st.expander("What is diversity?"):
         #    st.caption("Maximal Marginal Relevance (MMR) tries to reduce redundancy of fetched documents and increase diversity. 0 being the most diverse, 1 being the least diverse. 0.5 is a balanced state.")
 
-    st.subheader("📖 Further Notes")
-    st.write(
-        "Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. The sources may appear less relevant to the question due to the diversity of the search."
-    )
-    link2 = "https://www.actuarialstandardsboard.org/standards-of-practice/"
-    st.write(
-        f"Please visit [Actuarial Standard Board's ASOP site]({link2}) to get the latest ASOP."
-    )
-
-    link3 = "https://github.com/DanTCIM/ASOP_RAG"
-    st.write(
-        f"The Python codes and documentation of the project are in [GitHub]({link3})."
-    )
 
 # # Model and directory setup
 embeddings_model = OpenAIEmbeddings()
@@ -293,6 +232,69 @@ if user_prompt := st.chat_input("What is your question on ASOP?"):
     with st.chat_message("user"):
         st.write(user_prompt)
 
+
+if document_name != "All":
+
+    pdf_file_path = base_path + "/" + document_name
+    # Open the file in binary mode
+    with open(pdf_file_path, "rb") as pdf_file:
+        # Read the PDF file's binary data
+        pdf_bytes = pdf_file.read()
+
+        # Create the download button
+        st.sidebar.download_button(
+            label="Download the document",
+            data=pdf_bytes,
+            file_name=pdf_file_path,
+            mime="application/octet-stream",
+            use_container_width=True,
+        )
+
+    if st.sidebar.button(
+        "Get main themes",
+        use_container_width=True,
+    ):
+        user_prompt = "What are the main themes of the documents?"
+        st.session_state.messages.append(
+            {"role": "user", "content": user_prompt, "type": "text"}
+        )
+        with st.chat_message("user"):
+            st.write(user_prompt)
+
+with st.sidebar:
+    col1, col2 = st.columns(2)
+    with col1:
+
+        def convert_df():
+            df = pd.DataFrame(st.session_state.messages)
+            return df.to_csv().encode("utf-8")
+
+        st.download_button(
+            label="Download Chat",
+            help="Download chat history in CSV",
+            data=convert_df(),
+            file_name="chat_history.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    with col2:
+
+        def clear_chat_history():
+            st.session_state.messages = [
+                {
+                    "role": "ai",
+                    "content": "What is your question on ASOP?",
+                    "type": "text",
+                }
+            ]
+
+        st.button(
+            "Clear Chat",
+            help="Clear chat history",
+            on_click=clear_chat_history,
+            use_container_width=True,
+        )
+
 # Generate a new response if last message is not from assistant
 if st.session_state.messages[-1]["role"] != "ai":
     with st.chat_message("ai"):
@@ -305,3 +307,18 @@ if st.session_state.messages[-1]["role"] != "ai":
     source_expand = {"role": "ai", "content": sources, "type": "source"}
     st.session_state.messages.append(message)
     st.session_state.messages.append(source_expand)
+
+with st.sidebar:
+    st.subheader("📖 Further Notes")
+    st.write(
+        "Responses are based on LLM's features and search algorithms, and should not be relied upon as definitive or error-free. Users are encouraged to review the source contexts carefully. The sources may appear less relevant to the question due to the diversity of the search."
+    )
+    link2 = "https://www.actuarialstandardsboard.org/standards-of-practice/"
+    st.write(
+        f"Please visit [Actuarial Standard Board's ASOP site]({link2}) to get the latest ASOP."
+    )
+
+    link3 = "https://github.com/DanTCIM/ASOP_RAG"
+    st.write(
+        f"The Python codes and documentation of the project are in [GitHub]({link3})."
+    )
