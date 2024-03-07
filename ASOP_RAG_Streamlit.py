@@ -23,6 +23,10 @@ import pandas as pd
 ## API key setup
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
+st.set_page_config(
+    page_title="ASOP Q&A Model",
+)
+
 # # Set up the title and input
 st.header(
     "Actuarial Standards of Practice (ASOP) Q&A Machine using Retrieval Augmented Generation (RAG)"
